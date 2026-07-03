@@ -5,10 +5,6 @@
   --green:#107C10;        /* deep xbox green */
   --lime:#83f52c;         /* energy / glow accent */
   --lime-soft:rgba(131,245,44,.35);
-  --purple:#d946ef;       /* vibrant purple for case studies */
-  --purple-soft:rgba(217,70,239,.35);
-  --orange:#ff8c42;       /* warm orange for contact */
-  --orange-soft:rgba(255,140,66,.35);
   --text:#eef2ee;
   --muted:#97a397;
   --glass:rgba(255,255,255,.04);
@@ -74,10 +70,16 @@ section{position:relative;z-index:2}
 
 /* ============ HEADER ============ */
 header.site{
-  position:sticky;top:0;z-index:50;
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  padding:14px 0;
+  transition:transform .35s ease;
   backdrop-filter:url(#liquid);-webkit-backdrop-filter:url(#liquid);
 }
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+/* when scrolling DOWN the page, the header slides up out of view.
+   scrolling UP brings it back. the JS toggles this class. */
+header.site.hidden{transform:translateY(-120%)}
+/* .nav-inner now sits inside a .wrap so it lines up with every other section */
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px}
 .brand{font-family:'Poppins',sans-serif;font-weight:600;font-size:1.15rem;letter-spacing:.01em;color:var(--text)}
 
 /* right-side glass pill holding the nav links + calendar */
@@ -100,7 +102,9 @@ header.site{
 .nav-cal:hover{background:rgba(255,255,255,.14);border-color:var(--border-green);transform:translateY(-1px)}
 
 /* ============ HERO ============ */
-.hero{min-height:92vh;display:flex;align-items:center;overflow:hidden}
+/* padding-top clears the fixed header; .hero-grid holds the two columns */
+.hero{min-height:92vh;display:flex;align-items:center;overflow:hidden;padding:110px 0 40px}
+.hero > .wrap{width:100%}
 .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;width:100%}
 .hero h1{
   font-family:'IBM Plex Mono',monospace;
@@ -292,22 +296,22 @@ header.site{
 }
 .case:hover{border-color:var(--border-green);transform:translateY(-6px)}
 .case.feature{grid-column:1 / -1;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;overflow:visible}
-.case .tag{font-family:'Poppins',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
-.case h3{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.5rem;margin:10px 0 6px;text-transform:uppercase;color:var(--purple)}
+.case .tag{font-family:'Poppins',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+.case h3{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.5rem;margin:10px 0 6px;text-transform:uppercase;color:var(--lime)}
 .case .role{font-size:.86rem;color:var(--muted);margin-bottom:16px}
 .case p{font-size:.92rem;color:var(--muted);margin-bottom:18px}
 .case .metrics{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px}
-.metric .num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.5rem;color:var(--purple)}
+.metric .num{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.5rem;color:var(--lime)}
 .metric .cap{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.case .link{font-family:'Poppins',sans-serif;font-size:.78rem;color:var(--text);border-bottom:1px solid var(--purple);padding-bottom:2px;transition:color .2s}
-.case .link:hover{color:var(--purple)}
+.case .link{font-family:'Poppins',sans-serif;font-size:.78rem;color:var(--text);border-bottom:1px solid var(--border-green);padding-bottom:2px;transition:color .2s}
+.case .link:hover{color:var(--lime)}
 .case-visual{
   border-radius:14px;min-height:280px;position:relative;overflow:visible;
 }
 /* the picture will live in here and stays clipped to the rounded box */
 .cv-media{
   position:absolute;inset:0;border-radius:14px;overflow:hidden;border:1px solid var(--border);
-  background-image:url('tivo.png');
+  background-image:url('../assets/images/tivo.png');
   background-size:cover;
   background-position:center;
 }
@@ -361,10 +365,10 @@ footer p{color:var(--muted);font-size:.85rem}
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:900px){
-  .hero-grid{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr;position:relative}
 
   /* On mobile: keep the floppy visible but as a faint backdrop BEHIND the text.
-     - position:absolute + inset:0 makes it fill the hero area
+     - position:absolute + inset:0 fills the hero-grid area
      - opacity makes it see-through so the text stays readable
      - z-index:0 puts it underneath; pointer-events:none means it never blocks taps */
   .hero-visual{
@@ -377,7 +381,7 @@ footer p{color:var(--muted);font-size:.85rem}
     pointer-events:none;
   }
   /* make sure the hero TEXT sits above the faint floppy */
-  .hero-grid > .reveal:first-child{
+  .hero-text{
     position:relative;
     z-index:2;
   }
