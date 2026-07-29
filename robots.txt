@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://design-portfolio-iota-lilac.vercel.app/sitemap.xml
